@@ -40,8 +40,11 @@ class RequestParser:
         """
         data = None
         if request.command == Methods.POST:
-            content_len = int(request.headers['content-length'])
-            data = json.loads(request.rfile.read(content_len).decode())
+            try:
+                content_len = int(request.headers['content-length'])
+                data = json.loads(request.rfile.read(content_len).decode())
+            except:
+                pass
         return data
 
     def parse(self, request):

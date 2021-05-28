@@ -1,7 +1,8 @@
 import http.server
 
 from modules.requests.parser import RequestParser
-from modules.urls import urls_map
+from modules.response.response import Response
+from modules.app import app
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -21,14 +22,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
               str(parameters) + " data = " + str(data))
 
         # Check if the urls is valid, otherwise send a 404
-        if url in urls_map:
-            view = urls_map[url]
+        if url in app.routes:
+            view = app.routes[url]
             view(method, self, url, parameters, data)
         else:
-            self.send_response(404)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            self.wfile.write(bytes('404 - Not Found', "utf8"))
+            response = Response(self)
+            response.status_code(404)
+            response.file('pages/404.html')
+            response.send()
 
     def do_GET(self):
         """
