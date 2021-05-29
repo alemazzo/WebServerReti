@@ -6,7 +6,11 @@ from modules.app import app
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
+    """
+    HTTP Request Handler
+    """
 
+    # The request parser
     parser = RequestParser()
 
     def send_request_to_view(self):
@@ -30,6 +34,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             response.status_code(404)
             response.file('pages/errors/404.html')
             response.send()
+
+    # Map each method to send_request_to_view()
 
     def do_GET(self):
         """

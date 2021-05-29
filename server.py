@@ -15,8 +15,8 @@ else:
 """
 Very important!!
 Load all modules in views folder in order to execute all the
-app.routes decorator which add the mapping to the function 
-to execute
+app.routes decorator which add the mapping of the url
+to the function to execute
 """
 for entry in os.scandir('views'):
     if entry.is_file() and entry.name[-3:].lower() == '.py':

@@ -16,14 +16,17 @@ class RequestParser:
         url = path
         parameters = {}
 
+        # Check if there are get parameters
         if '?' in path:
             url, params = path.split('?')
 
+            # Check if there are multiple parameters
             if '&' in params:
                 params = params.split('&')
             else:
                 params = [params]
 
+            # Build the parameters's dictionary
             for param in params:
                 name, value = None, None
                 if '=' in param:
@@ -36,10 +39,16 @@ class RequestParser:
 
     def _parse_post_data(self, request):
         """
-        Unpack the post data
+        Unpack the post data (if present)
         """
+
         data = None
+
+        # Check if it's a POST request
         if request.command == Methods.POST:
+
+            # Try to load the json data from the request.
+            # Only data form accepted is JSON
             try:
                 content_len = int(request.headers['content-length'])
                 data = json.loads(request.rfile.read(content_len).decode())

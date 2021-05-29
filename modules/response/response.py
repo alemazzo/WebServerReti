@@ -2,7 +2,11 @@
 class Response:
     """
     Generic response for a request.
-    Give access to manage status code, headers, content type and the response data
+    Give access to:
+        - status code
+        - headers
+        - content type
+        - response data
     """
 
     def __init__(self, request):
