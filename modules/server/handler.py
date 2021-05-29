@@ -28,7 +28,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         else:
             response = Response(self)
             response.status_code(404)
-            response.file('pages/404.html')
+            response.file('pages/errors/404.html')
             response.send()
 
     def do_GET(self):

@@ -31,7 +31,7 @@ class App:
         """
         response = Response(request)
         response.status_code(405)
-        response.file('pages/405.html')
+        response.file('pages/errors/405.html')
         response.send()
 
     def authentication_required(self, request, message):
@@ -42,7 +42,7 @@ class App:
         response.status_code(401)
         response.headers(('WWW-Authenticate',
                           'Basic realm="Enter the admin credentials"'))
-        response.raw(message.encode())
+        response.file('pages/errors/401.html')
         response.send()
 
     def route(self, route, methods, auth=False):
@@ -57,8 +57,6 @@ class App:
                     return self.method_not_allowed(route, method, request)
 
                 if auth:
-                    print(request.headers['Authorization'])
-                    print(self.credentials)
                     if request.headers['Authorization'] == None:
                         return self.authentication_required(request, 'No credentials sent')
                     elif request.headers['Authorization'] != self.credentials:
