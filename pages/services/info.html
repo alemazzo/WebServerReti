@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Info</title>
 </head>
 <body>
     <h1>Info</h1>
+    <h2>Contatti:</h2>
+    <div id="contatti"></div>
+    <script>
+        $.get('/api/contatti', (data) => {
+            data = Object.entries(data)
+            var format = ''
+            data.forEach(entry => {
+                format += `${entry[0]} : ${entry[1]}<br>`
+            })
+            $("#contatti").html(format)
+        });
+    </script>
 </body>
 </html>

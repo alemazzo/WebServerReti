@@ -1,11 +1,5 @@
-[
-    {
-        "segreteria": "0541999999"
-    },
-    {
-        "cardiologia": "0541999999"
-    },
-    {
-        "prenotazione vaccino": "0541999999"
-    }
-]
+{
+    "segreteria": "0541999999",
+    "cardiologia": "0541888888",
+    "prenotazione vaccino": "0541777777"
+}

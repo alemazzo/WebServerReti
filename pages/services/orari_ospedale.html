@@ -4,9 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Orari Ospedale</title>
 </head>
 <body>
     <h1>Orari Ospedale</h1>
+    <div id="orari"></div>
+    <script>
+        $.get('/api/orari', (data) => {
+            const format = `
+                Lunedì : ${data['lunedì'][0]} -- ${data['lunedì'][1]}<br>
+                Martedì : ${data['martedì'][0]} -- ${data['martedì'][1]}<br>
+                Mercoledì : ${data['mercoledì'][0]} -- ${data['mercoledì'][1]}<br>
+                Giovedì : ${data['giovedì'][0]} -- ${data['giovedì'][1]}<br>
+                Venerdì : ${data['venerdì'][0]} -- ${data['venerdì'][1]}<br>
+                Sabato : ${data['sabato'][0]} -- ${data['sabato'][1]}<br>
+                Domenica : ${data['domenica'][0]} -- ${data['domenica'][1]}<br>
+            `
+            $("#orari").html(format)
+        });
+    </script>
 </body>
 </html>
