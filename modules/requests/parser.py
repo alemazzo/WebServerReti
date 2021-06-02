@@ -1,6 +1,7 @@
 import json
 
 from modules.requests.methods import Methods
+from modules.requests.request import Request
 
 
 class RequestParser:
@@ -37,7 +38,7 @@ class RequestParser:
 
         return url, parameters
 
-    def _parse_post_data(self, request):
+    def _parse_post_data(self, connection):
         """
         Unpack the post data (if present)
         """
@@ -45,23 +46,23 @@ class RequestParser:
         data = None
 
         # Check if it's a POST request
-        if request.command == Methods.POST:
+        if connection.command == Methods.POST:
 
             # Try to load the json data from the request.
             # Only data form accepted is JSON
             try:
-                content_len = int(request.headers['content-length'])
-                data = json.loads(request.rfile.read(content_len).decode())
+                content_len = int(connection.headers['content-length'])
+                data = json.loads(connection.rfile.read(content_len).decode())
             except:
                 pass
         return data
 
-    def parse(self, request):
+    def parse(self, connection):
         """
         Unpack the request
         """
-        method = request.command
-        url, parameters = self._parse_parameters(request.path)
-        data = self._parse_post_data(request)
+        method = connection.command
+        url, parameters = self._parse_parameters(connection.path)
+        data = self._parse_post_data(connection)
 
-        return method, url, parameters, data
+        return Request(connection, method, url, parameters, data)

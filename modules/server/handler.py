@@ -19,16 +19,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
         """
 
         # Unpack the request and extract the data
-        method, url, parameters, data = self.parser.parse(self)
+        request = self.parser.parse(self)
 
         # Log the request
-        print(method + " url = " + url + " parameters = " +
-              str(parameters) + " data = " + str(data))
+        print(request.method + " url = " + request.url + " parameters = " +
+              str(request.parameters) + " data = " + str(request.data))
 
         # Check if the urls is valid, otherwise send a 404
-        if url in app.routes:
-            view = app.routes[url]
-            view(method, self, url, parameters, data)
+        if request.url in app.routes:
+            view = app.routes[request.url]
+            view(request)
         else:
             response = Response(self)
             response.status_code(404)

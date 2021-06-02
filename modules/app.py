@@ -4,6 +4,7 @@ import signal
 import json
 from base64 import b64encode
 
+from modules.requests.request import Request
 from modules.response.response import Response
 
 
@@ -14,7 +15,7 @@ class App:
     """
 
     def __init__(self):
-        self.routes = {}
+        self.routes = {}  # The routes of the application
         self.server = None
         self.credentials = ""
         self._load_credentials()
@@ -28,20 +29,20 @@ class App:
             self.credentials = 'Basic ' + b64encode(
                 self.credentials.encode()).decode("ascii")
 
-    def method_not_allowed(self, route, method, request):
+    def _method_not_allowed(self, connection):
         """
         Response with Method Not Allowed.
         """
-        response = Response(request)
+        response = Response(connection)
         response.status_code(405)
         response.file('pages/errors/405.html')
         response.send()
 
-    def authentication_required(self, request, message):
+    def _authentication_required(self, connection, message):
         """
         Response with the request of authentication
         """
-        response = Response(request)
+        response = Response(connection)
         response.status_code(401)
         response.headers(('WWW-Authenticate',
                           'Basic realm="Enter the admin credentials"'))
@@ -65,22 +66,24 @@ class App:
         def wrapper(func):
 
             # The wrapper of the view
-            def inner(method, request, url, parameters, data=None):
+            def inner(request: Request):
+
+                connection = request.connection
 
                 # Check the method availability
-                if not method in methods:
-                    return self.method_not_allowed(route, method, request)
+                if not request.method in methods:
+                    return self._method_not_allowed(connection)
 
                 # Check if authentication is required
                 if auth:
-                    if request.headers['Authorization'] == None:
-                        return self.authentication_required(request, 'No credentials sent')
-                    elif request.headers['Authorization'] != self.credentials:
-                        return self.authentication_required(request, 'Wrong credentials')
+                    if connection.headers['Authorization'] == None:
+                        return self._authentication_required(connection, 'No credentials sent')
+                    elif connection.headers['Authorization'] != self.credentials:
+                        return self._authentication_required(connection, 'Wrong credentials')
 
                 # Response to the request through the specified view that now
                 # had passed all the filtering and tests.
-                func(method, request, url, parameters, data)
+                func(request)
 
             # Add the following route to the dictionary of all the routes
             self.routes[route] = inner

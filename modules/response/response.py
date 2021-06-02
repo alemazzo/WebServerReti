@@ -9,8 +9,8 @@ class Response:
         - response data
     """
 
-    def __init__(self, request):
-        self._request = request
+    def __init__(self, connection):
+        self._connection = connection
 
         self._status_code = None
         self._content_type = 'text/html'
@@ -49,15 +49,15 @@ class Response:
         self._data = data
 
     def _send_headers(self):
-        self._request.send_response(self._status_code)
-        self._request.send_header('Content-type', self._content_type)
+        self._connection.send_response(self._status_code)
+        self._connection.send_header('Content-type', self._content_type)
         for header in self._headers:
-            self._request.send_header(header[0], header[1])
-        self._request.end_headers()
+            self._connection.send_header(header[0], header[1])
+        self._connection.end_headers()
 
     def send(self):
         """
         Send the response
         """
         self._send_headers()
-        self._request.wfile.write(self._data)
+        self._connection.wfile.write(self._data)
