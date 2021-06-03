@@ -1,1 +1,14 @@
-[{"id": "1", "pronto": false, "esito": "Positivo al Covid"}, {"id": "3320", "pronto": true, "esito": "antonio"}, ""]
+[
+    {
+        "id": "1",
+        "esito": "Positivo al Covid"
+    },
+    {
+        "id": "3320",
+        "esito": "antonio"
+    },
+    {
+        "id": "11",
+        "esito": "aaaaaaaaaaaaaaaaa"
+    }
+]

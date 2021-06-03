@@ -53,8 +53,9 @@ def visite(request: Request):
             response.raw(json.dumps(visita).encode())
     else:
         # Create the new visita
+        _id = random.randint(0, 10000)
         visita = {
-            'id': random.randint(0, 10000),
+            'id': _id,
             'nome': request.data['nome'],
             'cognome': request.data['cognome']
         }
@@ -75,9 +76,8 @@ def visite(request: Request):
 @app.route(route='/api/esiti', methods=[Methods.GET, Methods.POST])
 def esiti(request: Request):
     response = Response(request.connection)
-    response.status_code(200)
     response.content_type('application/json')
-
+    response.status_code(200)
     if request.method == Methods.GET:
 
         if not 'id' in request.parameters:
@@ -86,11 +86,14 @@ def esiti(request: Request):
 
         else:
             # Get the esito with the specified ID
-            _id = request.parameters['id']
-            esiti = json.loads(open('data/esiti.json').read())
-            esito = list(filter(lambda x: x['id'] == _id, esiti))[0]
-            response.raw(json.dumps(esito).encode())
-
+            try:
+                _id = request.parameters['id']
+                esiti = json.loads(open('data/esiti.json').read())
+                esito = list(filter(lambda x: x['id'] == _id, esiti))[0]
+                response.raw(json.dumps(esito).encode())
+            except:
+                response.status_code(404)
+                response.raw(''.encode())
     else:
         # Add the new esito
         esito = request.data
@@ -100,6 +103,6 @@ def esiti(request: Request):
         # Write the output
         with open('data/esiti.json', 'w') as output:
             output.write(json.dumps(esiti))
-        response.raw('OK'.encode())
+        response.raw('{"status":"OK"}'.encode())
 
     response.send()

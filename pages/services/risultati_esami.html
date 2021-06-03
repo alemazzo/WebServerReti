@@ -19,13 +19,12 @@
                 type: "GET",
                 url: `/api/esiti?id=${$("#visita").val()}`,
                 'success': (response) => {
-                    if (response["pronto"]){
-                        alert(`L'esito è "${response["esito"]}"`)
-                    } else {
-                        alert("L'esito non è ancora pronto")
-                    }
-                    window.location.href = '/'
-                }
+                    alert(`L'esito è "${response["esito"]}"`)
+                },
+                error: (error) => {
+                    alert("L'esito non è ancora pronto")
+                },
+                
               });
         })
     </script>

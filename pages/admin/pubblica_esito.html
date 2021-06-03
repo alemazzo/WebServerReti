@@ -4,9 +4,36 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Pubblica Esito</title>
 </head>
 <body>
     <h1>Pubblica Esito</h1>
+
+    <label for="visita">ID Visita: </label>
+    <input type="text" name="visita" id="visita">
+
+    <label for="esito">Esito: </label>
+    <input type="text" name="esito" id="esito">
+
+    <button id='invia'>Pubblica Esito</button>
+    <script>
+        $('#invia').on('click', () => {
+            $.ajax({
+                type: "POST",
+                url: `/api/esiti`,
+                data: JSON.stringify({
+                    id: $("#visita").val(),
+                    esito: $("#esito").val()
+                }),
+                'success': (response) => {
+                    alert(response["status"])
+                },            
+                dataType: 'json',
+                processData: false,
+                contentType: 'application/json',
+              });
+        })
+    </script>
 </body>
 </html>
