@@ -23,7 +23,7 @@ class App:
     def _load_credentials(self):
         # Load the admin credentials from the
         # json file and encode in b64 for base auth
-        with open('credentials.json') as data:
+        with open('data/credentials.json') as data:
             jsondata = json.load(data)
             self.credentials = f'{jsondata["username"]}:{jsondata["password"]}'
             self.credentials = 'Basic ' + b64encode(

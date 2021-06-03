@@ -4,9 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Aggiungi Contatto</title>
 </head>
 <body>
     <h1>Aggiungi Contatto</h1>
+
+    <label for="nome">Nome: </label>
+    <input type="text" name="nome" id="nome">
+
+    <label for="numero">Numero: </label>
+    <input type="text" name="numero" id="numero">
+
+    <button id='invia'>Aggiungi Contatto</button>
+    <script>
+        $('#invia').on('click', () => {
+            $.ajax({
+                type: "POST",
+                url: `/api/contatti`,
+                data: JSON.stringify({
+                    nome: $("#nome").val(),
+                    numero: $("#numero").val()
+                }),
+                success: (response) => {
+                    alert(response["status"])
+                },
+                dataType: 'json',
+                processData: false,
+                contentType: 'application/json',
+              });
+        })
+    </script>
+
 </body>
 </html>

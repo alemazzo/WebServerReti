@@ -16,12 +16,22 @@ def orari(request: Request):
     response.send()
 
 
-@app.route(route='/api/contatti', methods=[Methods.GET])
+@app.route(route='/api/contatti', methods=[Methods.GET, Methods.POST])
 def contatti(request: Request):
     response = Response(request.connection)
     response.status_code(200)
     response.content_type('application/json')
-    response.file('data/contatti.json')
+
+    if request.method == Methods.GET:
+        response.file('data/contatti.json')
+    else:
+        contatti = json.loads(open('data/contatti.json').read())
+        contatti[request.data["nome"]] = request.data["numero"]
+
+        # Write the output
+        with open('data/contatti.json', 'w') as output:
+            output.write(json.dumps(contatti))
+        response.raw('{"status":"OK"}'.encode())
     response.send()
 
 

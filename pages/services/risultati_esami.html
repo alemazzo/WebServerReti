@@ -4,9 +4,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Risultati Esami</title>
 </head>
 <body>
     <h1>Risultati Esami</h1>
+    <label for="visita">ID Visita: </label>
+    <input type="text" name="visita" id="visita">
+
+    <button id='invia'>Controlla Esito</button>
+    <script>
+        $('#invia').on('click', () => {
+            $.ajax({
+                type: "GET",
+                url: `/api/esiti?id=${$("#visita").val()}`,
+                'success': (response) => {
+                    if (response["pronto"]){
+                        alert(`L'esito è "${response["esito"]}"`)
+                    } else {
+                        alert("L'esito non è ancora pronto")
+                    }
+                    window.location.href = '/'
+                }
+              });
+        })
+    </script>
 </body>
 </html>
