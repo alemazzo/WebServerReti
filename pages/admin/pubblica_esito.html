@@ -21,7 +21,7 @@
         $('#invia').on('click', () => {
             $.ajax({
                 type: "POST",
-                url: `/api/esiti`,
+                url: `/api/esiti/post`,
                 data: JSON.stringify({
                     id: $("#visita").val(),
                     esito: $("#esito").val()
